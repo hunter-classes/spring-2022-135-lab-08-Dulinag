@@ -22,6 +22,9 @@ int main()
 
   frame ("inImage.pgm");
 
+  scale ("inImage.pgm");
+
+  pixelate ("inImage.pgm");
 
 
 

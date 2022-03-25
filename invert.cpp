@@ -6,6 +6,7 @@
 using namespace std;
 #include "imageio.h"
 #include "invert.h"
+#include <cmath>
 
 
 
@@ -15,7 +16,7 @@ using namespace std;
   readImage(input, img, h, w);
 
   ofstream ostr;
-  ostr.open("outImage.pgm");
+  ostr.open("taskA.pgm");
   if (ostr.fail()) {
     cout << "Unable to write file\n";
     exit(1);
@@ -45,7 +46,7 @@ void inverthalf (std::string input){
   readImage(input, img, h, w);
 
   ofstream ostr;
-  ostr.open("outImage2.pgm");
+  ostr.open("taskB.pgm");
   if (ostr.fail()) {
     cout << "Unable to write file\n";
     exit(1);
@@ -82,7 +83,7 @@ void wbox (std::string input){
   readImage(input, img, h, w);
 
   ofstream ostr;
-  ostr.open("outImage3.pgm");
+  ostr.open("taskC.pgm");
   if (ostr.fail()) {
     cout << "Unable to write file\n";
     exit(1);
@@ -123,7 +124,7 @@ void wbox (std::string input){
     readImage(input, img, h, w);
 
     ofstream ostr;
-    ostr.open("outImage4.pgm");
+    ostr.open("taskD.pgm");
     if (ostr.fail()) {
       cout << "Unable to write file\n";
       exit(1);
@@ -170,3 +171,91 @@ void wbox (std::string input){
     ostr.close();
     return;
     }
+
+
+
+    void scale (std::string input){
+    int img[MAX_H][MAX_W];
+    int h, w;
+    readImage(input, img, h, w);
+
+    ofstream ostr;
+    ostr.open("taskE.pgm");
+    if (ostr.fail()) {
+      cout << "Unable to write file\n";
+      exit(1);
+    };
+
+    ostr << "P2" << endl;
+    ostr << w*2 << endl;
+    ostr << h*2 << endl;
+    ostr << 255 << endl;
+
+    for(int row = 0; row < h; row++) {
+      for(int i = 0; i <2; i++){
+        for(int col = 0; col < w; col++) {
+          assert(img[row][col] < 256);
+          assert(img[row][col] >= 0);
+
+          for(int j = 0; j <2; j++) {
+
+            ostr << img[row][col]<< ' ';
+}
+          }
+        ostr << endl;
+      }
+
+      ostr << endl;
+    }
+    ostr.close();
+    return;
+  }
+
+  void pixelate (std::string input){
+  int img[MAX_H][MAX_W];
+  int h, w;
+  readImage(input, img, h, w);
+
+  ofstream ostr;
+  ostr.open("taskF.pgm");
+  if (ostr.fail()) {
+    cout << "Unable to write file\n";
+    exit(1);
+  };
+
+  ostr << "P2" << endl;
+  ostr << w << endl;
+  ostr << h << endl;
+  ostr << 255 << endl;
+
+
+
+float x = 0;
+
+
+  for(int row = 0; row < h; row++) {
+
+      for(int col = 0; col < w; col++) {
+
+        if (row %2 == 0){
+        if(col % 2 == 0) {
+          ostr <<(img[row][col]+img[row+1][col]+img[row][col+1]+img[row+1][col+1]) /4 << ' ';
+              }
+        else {
+          ostr << (img[row][col]+img[row+1][col]+img[row][col-1]+img[row+1][col-1]) / 4 << ' ';
+              }
+           }
+        else {
+            if(col % 2 == 0) {
+          ostr << (img[row][col]+img[row-1][col]+img[row-1][col+1]+img[row][col+1]) / 4 << ' ';
+              }
+        else {
+        ostr << (img[row][col]+img[row-1][col]+img[row][col-1]+img[row-1][col-1]) / 4 << ' ';
+               }
+           }
+           }
+           }
+
+ostr.close();
+return;
+}
